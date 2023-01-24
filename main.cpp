@@ -32,17 +32,35 @@ int Seats(ifstream &file)
     return lines;
 }
 
-void FindTicket(ifstream &inFile, string personFullName)
+bool HaveTicket(string fullName)
 {
+    ifstream inFile("Train.txt");
+    string line;
+
+    while (getline(inFile, line))
+    {
+        if (line.find(fullName) != string::npos)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
+
+void ShowTicket(string personFullName)
+{
+    ifstream inFile("Train.txt");
     string line;
     while (getline(inFile, line))
     {
         if (line.find(personFullName) != string::npos)
         {
-            cout << "--Person Have Ticket!--" << endl;
             cout << "---------TICKET----------" << endl;
+            
             int countComma = 0;
-
             cout << "Name: ";
             for (int i = 0; i < line.size(); i++)
             {
@@ -68,13 +86,28 @@ void FindTicket(ifstream &inFile, string personFullName)
                     }
                 }
             }
-            cout << "\n-------------------\n";
+            cout << "\n-------------------\n\n\n";
         }
-
     }
 }
 
-bool HaveTicket()
+string FullNameGive()
+{
+    cout << endl;
+    string str;
+    string name;
+    string family;
+    cin.ignore();
+    cout << "Enter Passenger Name: ";
+    cin >> name;
+    transform(name.begin(), name.end(), name.begin(), ::tolower);
+    
+    cout << "Enter Passenger Family: ";
+    cin >> family;
+    transform(family.begin(), family.end(), family.begin(), ::tolower);
+
+    return str = name + ", " + family;
+}
 
 void AddSeat()
 {
@@ -82,8 +115,6 @@ void AddSeat()
     Person person;
     ofstream File("Train.txt", ios::app);
     ifstream InFile("Train.txt");
-
-
 
     cin.ignore();
     cout << "Enter Person name: ";
@@ -94,17 +125,20 @@ void AddSeat()
     getline(cin, person.family);
     transform(person.family.begin(), person.family.end(), person.family.begin(), ::tolower);
 
-    string fullName = person.name + ", " = person.family;
+    string fullName = person.name + ", " + person.family;
 
-    string line;
-    // bool found = ShowTicket(InFile, fullName);
-    if (true)
+    if (HaveTicket(fullName))
+    {
+        cout << "\n-- Person Have Ticket! --" << endl;
+        ShowTicket(fullName);
+    }
+    else
     {
         if (Seats(InFile) - 1 < 60)
         {
-            cout << "Enter Person compartment: ";
+            cout << "Enter Passenger compartment: ";
             getline(cin, person.compartment);
-            cout << "Enter Person seat: ";
+            cout << "Enter Passenger seat: ";
             getline(cin, person.seat);
 
             File << person.name << ", " << person.family << ", " << person.compartment << ", " << person.seat << endl;
@@ -126,8 +160,7 @@ void AddSeat()
 //         while (input >> namme >> )
 //         {
 //             /* code */
-//         }
-        
+//         }        
 //     }
 // }
 
@@ -168,7 +201,7 @@ int main()
         cout << "4. Ticket Refund" << endl;
         cout << "5. Exit" << endl;
 
-        cout << "Please Choose Your Number: ";
+        cout << "Please Choose Number: ";
         cin >> num;
         switch(HashIt(num))
         {
@@ -183,10 +216,21 @@ int main()
             }
             case e3:
             {
+                string fullName = FullNameGive();
+                if (HaveTicket(fullName))
+                {
+                    cout << "\n-- Passenger Have Ticket! --" << endl;
+                    ShowTicket(fullName);
+                }
+                else
+                {
+                    cout << "Sorry, Passenger don't have Ticket";
+                }
                 break;
             }
             case e4:
             {
+
                 break;
             }
             case e5:
