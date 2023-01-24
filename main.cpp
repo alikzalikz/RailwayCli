@@ -1,12 +1,14 @@
 #include<iostream>
 #include<fstream>
 #include<string>
+#include<bits/stdc++.h> 
 
 using namespace std;
 
 struct Person
 {
     string name;
+    string family;
     string compartment;
     string seat;
 };
@@ -30,6 +32,50 @@ int Seats(ifstream &file)
     return lines;
 }
 
+void FindTicket(ifstream &inFile, string personFullName)
+{
+    string line;
+    while (getline(inFile, line))
+    {
+        if (line.find(personFullName) != string::npos)
+        {
+            cout << "--Person Have Ticket!--" << endl;
+            cout << "---------TICKET----------" << endl;
+            int countComma = 0;
+
+            cout << "Name: ";
+            for (int i = 0; i < line.size(); i++)
+            {
+                if (line[i] != ',' && line[i] != ' ')
+                {
+                    cout << line[i];
+                }
+                if (line[i] == ',')
+                {
+                    countComma++;
+                    cout << endl;
+                    if (countComma == 1)
+                    {
+                        cout << "Family: ";
+                    }
+                    if (countComma == 2)
+                    {
+                        cout << "Compartment: ";
+                    }
+                    if (countComma == 3)
+                    {
+                        cout << "Seat: ";
+                    }
+                }
+            }
+            cout << "\n-------------------\n";
+        }
+
+    }
+}
+
+bool HaveTicket()
+
 void AddSeat()
 {
     cout << endl;
@@ -37,31 +83,31 @@ void AddSeat()
     ofstream File("Train.txt", ios::app);
     ifstream InFile("Train.txt");
 
+
+
     cin.ignore();
     cout << "Enter Person name: ";
     getline(cin, person.name);
+    transform(person.name.begin(), person.name.end(), person.name.begin(), ::tolower);
     
+    cout << "Enter Person family: ";
+    getline(cin, person.family);
+    transform(person.family.begin(), person.family.end(), person.family.begin(), ::tolower);
+
+    string fullName = person.name + ", " = person.family;
+
     string line;
-    bool found = false;
-    while (getline(InFile, line))
+    // bool found = ShowTicket(InFile, fullName);
+    if (true)
     {
-        if (line.find(person.name) != string::npos)
-        {
-            cout << "--Person Have Ticket!--\n\n\n";
-            found = true;
-            break;
-        }
-    }
-    if (!found)
-    {
-        if (Seats(InFile) - 1 > 60)
+        if (Seats(InFile) - 1 < 60)
         {
             cout << "Enter Person compartment: ";
             getline(cin, person.compartment);
             cout << "Enter Person seat: ";
             getline(cin, person.seat);
 
-            File << person.name << ", " << person.compartment << ", " << person.seat << endl;
+            File << person.name << ", " << person.family << ", " << person.compartment << ", " << person.seat << endl;
             File.close();
             cout << "-- Ticket Added Successfully! --\n\n\n";
         }
@@ -72,6 +118,21 @@ void AddSeat()
     }
 
 }
+
+// void ShowDate()
+// {
+//     if (ifstream input{"Train.txt", ios::in})
+//     {
+//         while (input >> namme >> )
+//         {
+//             /* code */
+//         }
+        
+//     }
+// }
+
+
+
 
 enum string_code
 {
