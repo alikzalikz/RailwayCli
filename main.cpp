@@ -64,26 +64,6 @@ string Availabe(int state)
     return SeatsNum;
 }
 
-
-int Seats(ifstream &file)
-{
-    char ch;
-    int lines = 0;
-    
-    file.seekg(0,ios::beg);
-    while (file)
-    {
-        file.get(ch);
-
-        if (ch == '\n')
-        {
-            lines ++;
-        }
-    }
-    
-    return lines;
-}
-
 void ShowTicket(string personFullName)
 {
     ifstream inFile("Train.txt");
@@ -173,7 +153,7 @@ void AddSeat()
     }
     else
     {
-        if (Seats(InFile) - 1 < 60)
+        if (Availabe(0) != "0")
         {
             person.compartment = Availabe(0);
             person.seat = Availabe(1);
