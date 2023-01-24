@@ -157,6 +157,7 @@ void AddSeat()
 
     if (HaveTicket(fullName))
     {
+        cout << "\n-- Passenger Have Ticket Already! --" << endl;
         ShowTicket(fullName);
     }
     else
@@ -199,6 +200,7 @@ void AddCompartment()
 
     if (HaveTicket(fullName))
     {
+        cout << "\n-- Passenger Have Ticket Already! --" << endl;
         ShowTicket(fullName);
     }
     else
@@ -223,11 +225,10 @@ void AddCompartment()
     }
 }
 
-// TODO: delete ticket but show not find
 void RefundTicket(string fullName)
 {
     string line;
-    string str = "";
+    string newFile = "";
     bool state = false;
 
     ifstream InFile("Train.txt");
@@ -235,27 +236,27 @@ void RefundTicket(string fullName)
     {
         if (line.find(fullName) == string::npos)
         {
-            str += line + '\n';
-            break;
+            newFile += line + '\n';
         }
         else
         {
+            ShowTicket(fullName);
             state = true;
         }
     }
     InFile.close();
 
     ofstream File("Train.txt");
-    File << str;
+    File << newFile;
     File.close();
 
     if (state)
     {
-        cout << "\n-- Ticket Refunded Successfully!-- " << endl;
+        cout << "-- Ticket Refunded Successfully!--\n\n\n";
     }
     else
     {
-        cout << "\nTicket not found!" << endl;
+        cout << "\nTicket not found!!\n\n\n";
     }
 }
 
