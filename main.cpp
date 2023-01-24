@@ -35,7 +35,7 @@ bool HaveTicket(string searchContent)
 
 string Availabe(int state)
 {
-    string SeatsNum = "0";
+    string stateNum = "0";
     for (int compartmentsI = 1; compartmentsI <= 10; compartmentsI++)
     {
         for (int seatsI = 1; seatsI <= 6; seatsI++)
@@ -45,23 +45,38 @@ string Availabe(int state)
             {
                 if (state == 0)
                 {
-                    SeatsNum = to_string(compartmentsI);
+                    stateNum = to_string(compartmentsI);
                     break;
                 }
                 if (state == 1)
                 {
-                    SeatsNum = to_string(seatsI);
+                    stateNum = to_string(seatsI);
                     break;
                 }
 
             }
         }
-        if (SeatsNum != "0")
+        if (stateNum != "0")
         {
             break;
         }
     }
-    return SeatsNum;
+    return stateNum;
+}
+
+string AvailabeCompartment()
+{
+    string compartmentNum = "0";
+    for (int compartmentsI = 1; compartmentsI <= 10; compartmentsI++)
+    {
+        string str = " " + to_string(compartmentsI) + ", ";
+        if (!HaveTicket(str))
+        {
+            compartmentNum = to_string(compartmentsI);
+            break;
+        }
+    }
+    return compartmentNum;
 }
 
 void ShowTicket(string personFullName)
@@ -99,7 +114,7 @@ void ShowTicket(string personFullName)
                     }
                 }
             }
-            cout << "\n-------------------\n\n\n";
+            cout << "\n-------------------------\n\n\n";
         }
     }
 }
@@ -162,6 +177,50 @@ void AddSeat()
         }
     }
 
+}
+
+void AddCompartment()
+{
+    cout << endl;
+    Person person;
+    ofstream File("Train.txt", ios::app);
+    ifstream InFile("Train.txt");
+
+    cin.ignore();
+    cout << "Enter Passenger name: ";
+    getline(cin, person.name);
+    transform(person.name.begin(), person.name.end(), person.name.begin(), ::tolower);
+    
+    cout << "Enter Passenger family: ";
+    getline(cin, person.family);
+    transform(person.family.begin(), person.family.end(), person.family.begin(), ::tolower);
+
+    string fullName = person.name + ", " + person.family;
+
+    if (HaveTicket(fullName))
+    {
+        ShowTicket(fullName);
+    }
+    else
+    {
+        if (AvailabeCompartment() != "0")
+        {
+            person.compartment = AvailabeCompartment();
+            for (int seatsI = 0; seatsI < 6; seatsI++)
+            {
+                person.seat = Availabe(1);
+                File << person.name << ", " << person.family << ", " << person.compartment << ", " << person.seat << endl;
+            }
+            File.close();
+
+            cout << "\n-- Tickets Added Successfully! --" << endl;
+            ShowTicket(fullName);
+        }
+        else
+        {
+            cout << "\n-- Don't Have Empty Compartment! --\n\n\n";
+        }
+    }
 }
 
 // TODO: delete ticket but show not find
@@ -245,6 +304,7 @@ int main()
             }
             case e2:
             {
+                AddCompartment();
                 break;
             }
             case e3:

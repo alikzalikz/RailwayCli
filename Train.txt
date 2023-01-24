@@ -52,9 +52,9 @@ ali, koleiny, 9, 3
 ali, koleiny, 9, 4
 ali, koleiny, 9, 5
 ali, koleiny, 9, 6
-ali, koleiny, 10, 1
-ali, koleiny, 10, 2
-ali, koleiny, 10, 3
-ali, koleiny, 10, 4
-ali, koleiny, 10, 5
+mahdi, eivazi, 10, 1
+mahdi, eivazi, 10, 2
+mahdi, eivazi, 10, 3
+mahdi, eivazi, 10, 4
+mahdi, eivazi, 10, 5
 mahdi, eivazi, 10, 6
