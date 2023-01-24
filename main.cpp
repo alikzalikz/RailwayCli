@@ -68,13 +68,10 @@ void ShowTicket(string personFullName)
 {
     ifstream inFile("Train.txt");
     string line;
-    bool state = false;
     while (getline(inFile, line))
     {
         if (line.find(personFullName) != string::npos)
         {
-            state = true;
-            cout << "\n-- Passenger Have Ticket! --" << endl;
             cout << "---------TICKET----------" << endl;
             int countComma = 0;
             cout << "Name: ";
@@ -104,10 +101,6 @@ void ShowTicket(string personFullName)
             }
             cout << "\n-------------------\n\n\n";
         }
-    }
-    if (!state)
-    {
-        cout << "\nSorry, Passenger don't have Ticket\n\n\n";
     }
 }
 
@@ -257,7 +250,15 @@ int main()
             case e3:
             {
                 string fullName = GiveFullName();
-                ShowTicket(fullName);
+                if (HaveTicket(fullName))
+                {
+                    cout << "\n-- Passenger Have Ticket Already! --" << endl;
+                    ShowTicket(fullName);
+                }
+                else
+                {
+                    cout << "\nSorry, Passenger don't have Ticket\n\n\n";
+                }
                 break;
             }
             case e4:
