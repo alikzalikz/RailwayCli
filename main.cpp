@@ -58,8 +58,8 @@ void ShowTicket(string personFullName)
     {
         if (line.find(personFullName) != string::npos)
         {
+            cout << "\n-- Passenger Have Ticket! --" << endl;
             cout << "---------TICKET----------" << endl;
-            
             int countComma = 0;
             cout << "Name: ";
             for (int i = 0; i < line.size(); i++)
@@ -88,10 +88,14 @@ void ShowTicket(string personFullName)
             }
             cout << "\n-------------------\n\n\n";
         }
+        else
+        {
+            cout << "\nSorry, Passenger don't have Ticket" << endl;
+        }
     }
 }
 
-string FullNameGive()
+string GiveFullName()
 {
     cout << endl;
     string str;
@@ -117,11 +121,11 @@ void AddSeat()
     ifstream InFile("Train.txt");
 
     cin.ignore();
-    cout << "Enter Person name: ";
+    cout << "Enter Passenger name: ";
     getline(cin, person.name);
     transform(person.name.begin(), person.name.end(), person.name.begin(), ::tolower);
     
-    cout << "Enter Person family: ";
+    cout << "Enter Passenger family: ";
     getline(cin, person.family);
     transform(person.family.begin(), person.family.end(), person.family.begin(), ::tolower);
 
@@ -129,7 +133,6 @@ void AddSeat()
 
     if (HaveTicket(fullName))
     {
-        cout << "\n-- Person Have Ticket! --" << endl;
         ShowTicket(fullName);
     }
     else
@@ -143,29 +146,49 @@ void AddSeat()
 
             File << person.name << ", " << person.family << ", " << person.compartment << ", " << person.seat << endl;
             File.close();
-            cout << "-- Ticket Added Successfully! --\n\n\n";
+            cout << "\n-- Ticket Added Successfully! --\n\n\n";
         }
         else
         {
-            cout << "-- Train Was Full! --\n\n\n";
+            cout << "\n-- Train Was Full! --\n\n\n";
         }
     }
 
 }
 
-// void ShowDate()
-// {
-//     if (ifstream input{"Train.txt", ios::in})
-//     {
-//         while (input >> namme >> )
-//         {
-//             /* code */
-//         }        
-//     }
-// }
+void RefundTicket(string fullName)
+{
+    string line;
+    string str = "";
+    bool found = false;
 
+    ifstream InFile("Train.txt");
+    while (getline(InFile, line))
+    {
+        if (line.find(fullName) == string::npos)
+        {
+            str += line + '\n';
+        }
+        else
+        {
+            found = true;
+        }
+    }
+    InFile.close();
 
+    ofstream File("Train.txt");
+    File << str;
+    File.close();
 
+    if (found)
+    {
+        cout << "\n-- Ticket Refunded Successfully!-- " << endl;
+    }
+    else
+    {
+        cout << "\nTicket not found!" << endl;
+    }
+}
 
 enum string_code
 {
@@ -216,34 +239,25 @@ int main()
             }
             case e3:
             {
-                string fullName = FullNameGive();
-                if (HaveTicket(fullName))
-                {
-                    cout << "\n-- Passenger Have Ticket! --" << endl;
-                    ShowTicket(fullName);
-                }
-                else
-                {
-                    cout << "Sorry, Passenger don't have Ticket";
-                }
+                string fullName = GiveFullName();
+                ShowTicket(fullName);
                 break;
             }
             case e4:
             {
-
+                string fullName = GiveFullName();
+                RefundTicket(fullName);
                 break;
             }
             case e5:
             {
-                cout << endl;
-                cout << "-- GOOD LUCK --";
+                cout << "\n-- GOOD LUCK --";
                 state = false;
                 break;
             }
             case other:
             {
-                cout << endl;
-                cout << "-- Invalid Number! Please Try again --\n\n\n";
+                cout << "\n-- Invalid Number! Please Try again --\n\n\n";
                 break;
             }
         }
