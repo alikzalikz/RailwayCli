@@ -38,4 +38,7 @@
 # VSCode Workspace
 *.code-workspace
 
+# Other
+*.txt
+
 # End of https://www.toptal.com/developers/gitignore/api/c++
