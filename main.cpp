@@ -240,7 +240,7 @@ void RefundTicket(string fullName)
         }
         else
         {
-            ShowTicket(fullName);
+            // ShowTicket(fullName);
             state = true;
         }
     }
