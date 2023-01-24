@@ -13,6 +13,58 @@ struct Person
     string seat;
 };
 
+bool HaveTicket(string searchContent)
+{
+    ifstream inFile("Train.txt");
+    string line;
+    bool state = false;
+
+    while (getline(inFile, line))
+    {
+        if (line.find(searchContent) != string::npos)
+        {
+            state = true;
+            return true;
+        }
+    }
+    if (!state)
+    {
+        return false;
+    }
+}
+
+string Availabe(int state)
+{
+    string SeatsNum = "0";
+    for (int compartmentsI = 1; compartmentsI <= 10; compartmentsI++)
+    {
+        for (int seatsI = 1; seatsI <= 6; seatsI++)
+        {
+            string str = " " + to_string(compartmentsI) + ", " + to_string(seatsI);
+            if (!HaveTicket(str))
+            {
+                if (state == 0)
+                {
+                    SeatsNum = to_string(compartmentsI);
+                    break;
+                }
+                if (state == 1)
+                {
+                    SeatsNum = to_string(seatsI);
+                    break;
+                }
+
+            }
+        }
+        if (SeatsNum != "0")
+        {
+            break;
+        }
+    }
+    return SeatsNum;
+}
+
+
 int Seats(ifstream &file)
 {
     char ch;
@@ -32,32 +84,16 @@ int Seats(ifstream &file)
     return lines;
 }
 
-bool HaveTicket(string fullName)
-{
-    ifstream inFile("Train.txt");
-    string line;
-
-    while (getline(inFile, line))
-    {
-        if (line.find(fullName) != string::npos)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-}
-
 void ShowTicket(string personFullName)
 {
     ifstream inFile("Train.txt");
     string line;
+    bool state = false;
     while (getline(inFile, line))
     {
         if (line.find(personFullName) != string::npos)
         {
+            state = true;
             cout << "\n-- Passenger Have Ticket! --" << endl;
             cout << "---------TICKET----------" << endl;
             int countComma = 0;
@@ -88,10 +124,10 @@ void ShowTicket(string personFullName)
             }
             cout << "\n-------------------\n\n\n";
         }
-        else
-        {
-            cout << "\nSorry, Passenger don't have Ticket" << endl;
-        }
+    }
+    if (!state)
+    {
+        cout << "\nSorry, Passenger don't have Ticket\n\n\n";
     }
 }
 
@@ -139,14 +175,13 @@ void AddSeat()
     {
         if (Seats(InFile) - 1 < 60)
         {
-            cout << "Enter Passenger compartment: ";
-            getline(cin, person.compartment);
-            cout << "Enter Passenger seat: ";
-            getline(cin, person.seat);
+            person.compartment = Availabe(0);
+            person.seat = Availabe(1);
 
             File << person.name << ", " << person.family << ", " << person.compartment << ", " << person.seat << endl;
             File.close();
-            cout << "\n-- Ticket Added Successfully! --\n\n\n";
+            cout << "\n-- Ticket Added Successfully! --" << endl;
+            ShowTicket(fullName);
         }
         else
         {
@@ -156,11 +191,12 @@ void AddSeat()
 
 }
 
+// TODO: delete ticket but show not find
 void RefundTicket(string fullName)
 {
     string line;
     string str = "";
-    bool found = false;
+    bool state = false;
 
     ifstream InFile("Train.txt");
     while (getline(InFile, line))
@@ -168,10 +204,11 @@ void RefundTicket(string fullName)
         if (line.find(fullName) == string::npos)
         {
             str += line + '\n';
+            break;
         }
         else
         {
-            found = true;
+            state = true;
         }
     }
     InFile.close();
@@ -180,7 +217,7 @@ void RefundTicket(string fullName)
     File << str;
     File.close();
 
-    if (found)
+    if (state)
     {
         cout << "\n-- Ticket Refunded Successfully!-- " << endl;
     }
@@ -262,4 +299,5 @@ int main()
             }
         }
     }
+    return 0;
 }
